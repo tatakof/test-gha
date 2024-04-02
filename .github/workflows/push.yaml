@@ -3,7 +3,7 @@ name: deploy
 jobs: 
   # definimos el trabajo deploy
   deploy:
-    name: deploy to cluster
+    name: deploy-to-cluster
 	# OS de la maquina virtual que hace github para correr el job `deploy`
     runs-on: ubuntu-latest
 	# Pasos dentro de la maquina virtual que hace github para hacer `deploy`
