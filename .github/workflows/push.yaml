@@ -1,0 +1,27 @@
+on: push
+name: deploy
+jobs: 
+  # definimos el trabajo deploy
+  deploy:
+    name: deploy to cluster
+	# OS de la maquina virtual que hace github para correr el job `deploy`
+    runs-on: ubuntu-latest
+	# Pasos dentro de la maquina virtual que hace github para hacer `deploy`
+	# los pasos son las acciones
+    steps:
+	# actions es la org donde estan las acciones, pedimos la accion `checkout` con version `@master`. Esta accion va a descargarse (o hacer un checkout) nuestro repo y ponerlo en la VM
+    - uses: actions/checkout@master
+    - name: build and push to docker
+	  # construye imagen y la sube a docker hub
+	  # Viene del repo docker y la accion se llama `build-push-action` y es la version v1
+      uses: docker/build-push-action@v1
+	  # Declaramos las opciones especificas para hacer la accion `build-push-action`
+      with: 
+		# datos para logear al docker registry
+	    username: ${{ secrets.DOCKER_USERNAME }}
+		password: ${{ secrets.DOCKER_PASSWORD }}
+		repository: ${{ github.repository }}
+		# opciones que tagean la imagen con el sha
+		tag_with_ref: true
+		tag_with_sha: true
+		tags: ${{ github.sha }}
